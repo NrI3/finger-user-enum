@@ -54,7 +54,7 @@ finger-user-enum v$VERSION ( http://pentestmonkey.net/tools/finger-user-enum )
 Usage: finger-user-enum.pl [options] ( -u username | -U file-of-usernames ) ( -t host | -T file-of-targets )
 
 options are:
-        -m n     Maximum number of resolver processes (default: $max_procs)
+	-m n     Maximum number of resolver processes (default: $max_procs)
 	-u user  Check if user exists on remote system
 	-U file  File of usernames to check via finger service
 	-t host  Server host running finger service
@@ -160,7 +160,7 @@ print "Relay Server ............. $relayserver\n";
 print "Relay Server ............. Not used\n";
 }
 print "\n";
-print "######## Scan started at " . scalar(localtime()) . " #########\n";
+print "######## Scan started at " . scalar(localtime()) . " #########\n\n";
 
 # Spawn off correct number of children
 foreach my $proc_count (1..$max_procs) {
@@ -261,14 +261,12 @@ foreach my $proc_count (1..$max_procs) {
 				# if ($response =~ /Login\s+Name\s+TTY\s+Idle\s+When\s+Where.*($username.*<.*>.*)/s) {
 				if ($response =~ /Login\s+Name\s+TTY\s+Idle\s+When\s+Where.*($username.*)/s) {
 					my $username_info = $1;
-					$username_info =~ s/[\r\n]/./g; # Reduce to a single line
-					print $parent $trace . "$username_info\n";
+					print $parent "\e[1;32m$trace\e[0m" ."\n$username_info\n";
 					next;
 				}
 
 				# Assume a positive response if we don't recognise the format
-				$response =~ s/[\n\r]/./g;
-				print $parent $trace . "$response\n";
+				print $parent "\e[30m$trace\e[0m" . "\n$response\n";
 				next;
 			}
 
